@@ -4,20 +4,22 @@ namespace Naoray\EloquentModelAnalyzer;
 
 use ReflectionClass;
 use ReflectionObject;
+use Illuminate\Database\Eloquent\Model;
 
 class Analyzer
 {
-    public function relationsOf($resource)
+    public function relationsOf(Model $resource)
     {
-        $reflection = $this->reflect($resource);
+        return (new RelationDetector)
+            ->analyze($resource);
 
-        return collect($reflection->getMethods())
-            ->mapInto(ReflectionMethod::class)
-            ->filter->isRelationMethod()
-            ->mapWithKeys(function ($method) use ($resource) {
-                return $method->toArray($resource);
-            })
-            ->all();
+        // return collect($reflection->getMethods())
+        //     ->mapInto(ReflectionMethod::class)
+        //     ->filter->isRelationMethod()
+        //     ->mapWithKeys(function ($method) use ($resource) {
+        //         return $method->toArray($resource);
+        //     })
+        //     ->all();
     }
 
     protected function reflect($resource)
