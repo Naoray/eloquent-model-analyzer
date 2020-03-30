@@ -2,30 +2,62 @@
 
 namespace Naoray\EloquentModelAnalyzer;
 
+use Illuminate\Support\Str;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Traits\ForwardsCalls;
 
-class RelationMethod
+class RelationMethod implements Arrayable
 {
-    use ForwardsCalls;
+    use ForwardsCalls, InteractsWithRelationMethods;
 
-    protected $resource;
+    protected $reflection;
 
-    public function __construct(\ReflectionMethod $method)
+    public function __construct(array $data)
     {
-        $this->resource = $method;
+        $this->method = $data['method'];
+        $this->model = $data['model'];
+        $this->reflection = $data['reflection'];
+    }
+
+    protected function getRelatedClass()
+    {
+        $methodContent = $this->getRelationMethodContent($this->method);
+
+        /**
+         * 'author(): BelongsTo {return $this->belongsTo(User::class, 'author_id');'.
+         */
+        $className = Str::of($methodContent)
+            ->after('{return')
+            ->after('(')
+            ->before(',')
+            ->trim("(');");
+
+        /*
+         * If classname does not use ::class notation
+         * we consider it as a full class string reference.
+         */
+        if (!$className->is('*::class')) {
+            return $className;
+        }
+
+        $className = $className->before('::class')
+            ->__toString();
+
+        return $className === 'self' || $className === class_basename($this->reflection->getName())
+            ? $this->reflection->getName()
+            : $this->reflection->getNamespaceName() . '\\' . $className;
     }
 
     public function toArray()
     {
         return [
-            'type' => $this->getMethodReturnType(),
-            // 'column' => $this->getRelationColumn(),
-            'method_name' => $this->getName(),
+            $this->getRelatedClass() => [
+                'type' => $this->getMethodReturnType(),
+                'foreignKey' => $this->getForeignKeyName(),
+                'ownerKey' => $this->getOwnerKeyName(),
+                'methodName' => $this->getName(),
+            ],
         ];
-    }
-
-    protected function getRelationClass()
-    {
     }
 
     protected function getMethodReturnType()
@@ -33,14 +65,39 @@ class RelationMethod
         if ($this->hasReturnType()) {
             return $this->getReturnType()->getName();
         }
+
+        if ($docComment = $this->getDocComment()) {
+            return $this->getReturnTypeFromDoc($docComment);
+        }
+
+        return get_class($this->getRelation());
     }
 
-    protected function getRelationColumn()
+    protected function getForeignKeyName()
     {
+        $relationObj = $this->getRelation();
+
+        return method_exists($relationObj, 'getForeignKeyName')
+            ? $relationObj->getForeignKeyName()
+            : $relationObj->getForeignKey();
+    }
+
+    protected function getOwnerKeyName()
+    {
+        $relationObj = $this->getRelation();
+
+        return method_exists($relationObj, 'getOwnerKeyName')
+            ? $relationObj->getOwnerKeyName()
+            : $relationObj->getLocalKeyName();
+    }
+
+    protected function getRelation()
+    {
+        return $this->model->{$this->getName()}();
     }
 
     /**
-     * Dynamically pass method calls to the underlying resource.
+     * Dynamically pass method calls to the underlying method.
      *
      * @param  string  $method
      * @param  array  $parameters
@@ -48,6 +105,6 @@ class RelationMethod
      */
     public function __call($method, $parameters)
     {
-        return $this->forwardCallTo($this->resource, $method, $parameters);
+        return $this->forwardCallTo($this->method, $method, $parameters);
     }
 }

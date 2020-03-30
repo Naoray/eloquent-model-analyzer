@@ -3,32 +3,21 @@
 namespace Naoray\EloquentModelAnalyzer;
 
 use ReflectionMethod;
-use ReflectionObject;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
-class RelationDetector
+class MethodCollection extends Collection
 {
-    use InteractsWithRelationMethods;
-
-    public function analyze($resource)
+    public function filterRelationMethods($resource)
     {
-        $reflectionObject = new ReflectionObject($resource);
-
-        return collect($reflectionObject->getMethods(ReflectionMethod::IS_PUBLIC))
-            ->filterRelationMethods($resource)
-            ->map(function ($method) use ($resource, $reflectionObject) {
-                return [
-                    'method' => $method,
-                    'model' => $resource,
-                    'reflection' => $reflectionObject,
-                ];
-            })
-            ->mapInto(RelationMethod::class)
-            ->mapwithKeys(function ($method) {
-                return $method->toArray();
-            })
-            ->all();
+        return $this->filter(function (ReflectionMethod $method) use ($resource) {
+            return $this->methodIsNotFromBaseClass($method)
+                    && (
+                        $this->filterByReturnType($method)
+                        || $this->filterByDocComment($method)
+                        || $this->filterByContent($method, $resource)
+                    );
+        });
     }
 
     protected function methodIsNotFromBaseClass(ReflectionMethod $method)
