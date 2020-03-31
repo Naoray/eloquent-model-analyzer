@@ -9,10 +9,10 @@ class EloquentModelAnalyzerServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton(Analyzer::class, function ($app) {
-            return new Analyzer([
-                'relationsMethods' => RelationMethodDetector::class,
-            ]);
-        });
+        // $this->app->singleton(Analyzer::class, function ($app) {
+        //     return new Analyzer([
+        //         'relationsMethods' => RelationMethodDetector::class,
+        //     ]);
+        // });
     }
 }

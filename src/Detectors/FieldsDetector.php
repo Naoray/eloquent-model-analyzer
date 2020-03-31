@@ -2,11 +2,12 @@
 
 namespace Naoray\EloquentModelAnalyzer\Detectors;
 
-use ReflectionMethod;
-use ReflectionObject;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Doctrine\DBAL\Schema\Index;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
-use Naoray\EloquentModelAnalyzer\RelationMethod;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Naoray\EloquentModelAnalyzer\Contracts\Detector;
 use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 
@@ -16,64 +17,35 @@ class FieldsDetector implements Detector
 
     public function analyze(Model $resource): array
     {
-        $reflectionObject = new ReflectionObject($resource);
+        // get table name from model
+        $tableName = $resource->getTable();
+        $tableIndexes = DB::getDoctrineSchemaManager()->listTableIndexes($tableName);
 
-        return collect($reflectionObject->getMethods(ReflectionMethod::IS_PUBLIC))
-            ->filter(function (ReflectionMethod $method) use ($resource) {
-                return $this->methodIsNotFromBaseClass($method)
-                        && (
-                            $this->filterByReturnType($method)
-                            || $this->filterByDocComment($method)
-                            || $this->filterByContent($method, $resource)
-                        );
-            })
-            ->map(function ($method) use ($resource, $reflectionObject) {
-                return [
-                    'method' => $method,
-                    'model' => $resource,
-                    'reflection' => $reflectionObject,
-                ];
-            })
-            ->mapInto(RelationMethod::class)
-            ->mapwithKeys(function ($method) {
-                return $method->toArray();
-            })
-            ->all();
-    }
+        // get column names
+        $columnListing = Schema::getColumnListing($tableName);
 
-    protected function methodIsNotFromBaseClass(ReflectionMethod $method)
-    {
-        return !method_exists(Model::class, $method->getName());
-    }
+        return collect($columnListing)->mapWithKeys(function ($column) use ($tableName, $tableIndexes) {
+            $data = (object)DB::connection()->getDoctrineColumn($tableName, $column)->toArray();
 
-    protected function filterByReturnType(ReflectionMethod $method): bool
-    {
-        if (!$method->hasReturnType()) {
-            return false;
-        }
+            $indexes = Arr::where($tableIndexes, function (Index $index) use ($column) {
+                return in_array($column, $index->getColumns());
+            });
 
-        $returnType = $method->getReturnType();
-
-        return in_array($returnType->getName(), $this->getRelationTypes());
-    }
-
-    protected function filterByDocComment(ReflectionMethod $method): bool
-    {
-        if (!$docComment = $method->getDocComment()) {
-            return false;
-        }
-
-        return (bool)$this->getReturnTypeFromDoc($docComment);
-    }
-
-    protected function filterByContent(ReflectionMethod $method, Model $resource)
-    {
-        if ($method->getNumberOfParameters() > 0) {
-            return false;
-        }
-
-        $relationObject = $resource->{$method->getName()}();
-
-        return $relationObject instanceof Relation;
+            return [
+                $column => [
+                    'name' => $column,
+                    'type' => get_class($data->type),
+                    'unsigned' => $data->unsigned,
+                    'unique' => (bool)Arr::first($indexes, function (Index $index) {
+                        return $index->isUnique();
+                    }),
+                    'isForeignKey' => (bool)Arr::where(array_keys($indexes), function ($key) use ($column) {
+                        return Str::contains($key, '_foreign') && Str::contains($key, '_' . $column . '_');
+                    }),
+                    'nullable' => !$data->notnull,
+                    'autoincrement' => $data->autoincrement,
+                ],
+            ];
+        })->all();
     }
 }
