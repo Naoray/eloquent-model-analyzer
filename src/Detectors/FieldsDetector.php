@@ -1,22 +1,32 @@
 <?php
 
-namespace Naoray\EloquentModelAnalyzer;
+namespace Naoray\EloquentModelAnalyzer\Detectors;
 
 use ReflectionMethod;
 use ReflectionObject;
 use Illuminate\Database\Eloquent\Model;
+use Naoray\EloquentModelAnalyzer\RelationMethod;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Naoray\EloquentModelAnalyzer\Contracts\Detector;
+use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 
-class RelationDetector
+class FieldsDetector implements Detector
 {
     use InteractsWithRelationMethods;
 
-    public function analyze($resource)
+    public function analyze(Model $resource): array
     {
         $reflectionObject = new ReflectionObject($resource);
 
         return collect($reflectionObject->getMethods(ReflectionMethod::IS_PUBLIC))
-            ->filterRelationMethods($resource)
+            ->filter(function (ReflectionMethod $method) use ($resource) {
+                return $this->methodIsNotFromBaseClass($method)
+                        && (
+                            $this->filterByReturnType($method)
+                            || $this->filterByDocComment($method)
+                            || $this->filterByContent($method, $resource)
+                        );
+            })
             ->map(function ($method) use ($resource, $reflectionObject) {
                 return [
                     'method' => $method,
@@ -44,7 +54,7 @@ class RelationDetector
 
         $returnType = $method->getReturnType();
 
-        return in_array($returnType->getName(), static::getRelationTypes());
+        return in_array($returnType->getName(), $this->getRelationTypes());
     }
 
     protected function filterByDocComment(ReflectionMethod $method): bool

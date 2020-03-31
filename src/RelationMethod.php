@@ -5,12 +5,15 @@ namespace Naoray\EloquentModelAnalyzer;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 
 class RelationMethod implements Arrayable
 {
     use ForwardsCalls, InteractsWithRelationMethods;
 
     protected $reflection;
+    protected $model;
+    protected $method;
 
     public function __construct(array $data)
     {

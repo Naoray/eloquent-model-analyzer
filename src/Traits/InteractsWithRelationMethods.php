@@ -1,6 +1,6 @@
 <?php
 
-namespace Naoray\EloquentModelAnalyzer;
+namespace Naoray\EloquentModelAnalyzer\Traits;
 
 use ReflectionMethod;
 use Illuminate\Support\Arr;
