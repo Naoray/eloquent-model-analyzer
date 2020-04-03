@@ -4,6 +4,7 @@ namespace Naoray\EloquentModelAnalyzer\Detectors;
 
 use ReflectionMethod;
 use ReflectionObject;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Naoray\EloquentModelAnalyzer\RelationMethod;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -14,65 +15,61 @@ class RelationMethodDetector implements Detector
 {
     use InteractsWithRelationMethods;
 
-    public function analyze(Model $resource): array
+    /**
+     * @var Model
+     */
+    protected $model;
+
+    /**
+     * @param Model $model
+     */
+    public function __construct(Model $model)
     {
-        $reflectionObject = new ReflectionObject($resource);
+        $this->model = $model;
+    }
+
+    /**
+     * Analyzes given model with reflection to gain all methods which return
+     * Relation instances e.g. belongsTo, hasMany, hasOne, etc.
+     *
+     * @return Collection
+     */
+    public function analyze(): Collection
+    {
+        $reflectionObject = new ReflectionObject($this->model);
 
         return collect($reflectionObject->getMethods(ReflectionMethod::IS_PUBLIC))
-            ->filter(function (ReflectionMethod $method) use ($resource) {
-                return $this->methodIsNotFromBaseClass($method)
-                        && (
-                            $this->filterByReturnType($method)
-                            || $this->filterByDocComment($method)
-                            || $this->filterByContent($method, $resource)
-                        );
+            ->filter(function (ReflectionMethod $method) {
+                return $this->isRelationMethod($method);
             })
-            ->map(function ($method) use ($resource, $reflectionObject) {
-                return [
+            ->map(function ($method) use ($reflectionObject) {
+                return new RelationMethod([
                     'method' => $method,
-                    'model' => $resource,
+                    'model' => $this->model,
                     'reflection' => $reflectionObject,
-                ];
-            })
-            ->mapInto(RelationMethod::class)
-            ->mapwithKeys(function ($method) {
-                return $method->toArray();
-            })
-            ->all();
+                ]);
+            });
     }
 
-    protected function methodIsNotFromBaseClass(ReflectionMethod $method)
+    protected function isRelationMethod(ReflectionMethod $method): bool
     {
-        return !method_exists(Model::class, $method->getName());
-    }
-
-    protected function filterByReturnType(ReflectionMethod $method): bool
-    {
-        if (!$method->hasReturnType()) {
+        if (method_exists(Model::class, $method->getName())) {
             return false;
         }
 
-        $returnType = $method->getReturnType();
-
-        return in_array($returnType->getName(), $this->getRelationTypes());
-    }
-
-    protected function filterByDocComment(ReflectionMethod $method): bool
-    {
-        if (!$docComment = $method->getDocComment()) {
-            return false;
+        if ($method->hasReturnType()) {
+            return $this->isRelationReturnType($method->getReturnType());
         }
 
-        return (bool)$this->getReturnTypeFromDoc($docComment);
-    }
+        if ($docComment = $method->getDocComment()) {
+            return (bool)$this->extractReturnTypeFromDocs($docComment);
+        }
 
-    protected function filterByContent(ReflectionMethod $method, Model $resource)
-    {
         if ($method->getNumberOfParameters() > 0) {
             return false;
         }
 
-        $relationObject = $resource->{$method->getName()}();
+        $relationObject = $this->model->{$method->getName()}();
 
         return $relationObject instanceof Relation;
     }

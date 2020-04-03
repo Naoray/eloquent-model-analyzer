@@ -54,12 +54,11 @@ class RelationMethod implements Arrayable
     public function toArray()
     {
         return [
-            $this->getRelatedClass() => [
-                'type' => $this->getMethodReturnType(),
-                'foreignKey' => $this->getForeignKeyName(),
-                'ownerKey' => $this->getOwnerKeyName(),
-                'methodName' => $this->getName(),
-            ],
+            'relatedClass' => $this->getRelatedClass(),
+            'type' => $this->getMethodReturnType(),
+            'foreignKey' => $this->getForeignKeyName(),
+            'ownerKey' => $this->getOwnerKeyName(),
+            'methodName' => $this->getName(),
         ];
     }
 
@@ -70,7 +69,7 @@ class RelationMethod implements Arrayable
         }
 
         if ($docComment = $this->getDocComment()) {
-            return $this->getReturnTypeFromDoc($docComment);
+            return $this->extractReturnTypeFromDocs($docComment);
         }
 
         return get_class($this->getRelation());

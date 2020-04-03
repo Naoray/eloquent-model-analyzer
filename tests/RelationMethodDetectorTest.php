@@ -14,24 +14,23 @@ class RelationMethodDetectorTest extends TestCase
     {
         $user = new UserWithReturnTypes();
 
-        $relationMethods = (new RelationMethodDetector)
-            ->analyze($user);
+        $relationMethods = (new RelationMethodDetector($user))->analyze();
 
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
-            UserWithReturnTypes::class => [
-                'type' => BelongsTo::class,
-                'foreignKey' => 'parent_id',
-                'ownerKey' => 'id',
-                'methodName' => 'parent',
-            ],
-            Post::class => [
-                'type' => HasMany::class,
-                'foreignKey' => 'user_id',
-                'ownerKey' => 'id',
-                'methodName' => 'posts',
-            ],
-        ], $relationMethods);
+            'relatedClass' => UserWithReturnTypes::class,
+            'type' => BelongsTo::class,
+            'foreignKey' => 'parent_id',
+            'ownerKey' => 'id',
+            'methodName' => 'parent',
+        ], $relationMethods->first()->toArray());
+        $this->assertEquals([
+            'relatedClass' => Post::class,
+            'type' => HasMany::class,
+            'foreignKey' => 'user_id',
+            'ownerKey' => 'id',
+            'methodName' => 'posts',
+        ], $relationMethods->get(1)->toArray());
     }
 
     /** @test */
@@ -39,24 +38,23 @@ class RelationMethodDetectorTest extends TestCase
     {
         $user = new UserWithDocComments();
 
-        $relationMethods = (new RelationMethodDetector)
-            ->analyze($user);
+        $relationMethods = (new RelationMethodDetector($user))->analyze();
 
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
-            UserWithDocComments::class => [
-                'type' => BelongsTo::class,
-                'foreignKey' => 'parent_id',
-                'ownerKey' => 'id',
-                'methodName' => 'parent',
-            ],
-            Post::class => [
-                'type' => HasMany::class,
-                'foreignKey' => 'user_id',
-                'ownerKey' => 'id',
-                'methodName' => 'posts',
-            ],
-        ], $relationMethods);
+            'relatedClass' => UserWithDocComments::class,
+            'type' => BelongsTo::class,
+            'foreignKey' => 'parent_id',
+            'ownerKey' => 'id',
+            'methodName' => 'parent',
+        ], $relationMethods->first()->toArray());
+        $this->assertEquals([
+            'relatedClass' => Post::class,
+            'type' => HasMany::class,
+            'foreignKey' => 'user_id',
+            'ownerKey' => 'id',
+            'methodName' => 'posts',
+        ], $relationMethods->get(1)->toArray());
     }
 
     /** @test */
@@ -64,24 +62,23 @@ class RelationMethodDetectorTest extends TestCase
     {
         $user = new UserWithoutAnyHints();
 
-        $relationMethods = (new RelationMethodDetector)
-            ->analyze($user);
+        $relationMethods = (new RelationMethodDetector($user))->analyze();
 
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
-            UserWithoutAnyHints::class => [
-                'type' => BelongsTo::class,
-                'foreignKey' => 'parent_id',
-                'ownerKey' => 'id',
-                'methodName' => 'parent',
-            ],
-            Post::class => [
-                'type' => HasMany::class,
-                'foreignKey' => 'user_id',
-                'ownerKey' => 'id',
-                'methodName' => 'posts',
-            ],
-        ], $relationMethods);
+            'relatedClass' => UserWithoutAnyHints::class,
+            'type' => BelongsTo::class,
+            'foreignKey' => 'parent_id',
+            'ownerKey' => 'id',
+            'methodName' => 'parent',
+        ], $relationMethods->first()->toArray());
+        $this->assertEquals([
+            'relatedClass' => Post::class,
+            'type' => HasMany::class,
+            'foreignKey' => 'user_id',
+            'ownerKey' => 'id',
+            'methodName' => 'posts',
+        ], $relationMethods->get(1)->toArray());
     }
 }
 

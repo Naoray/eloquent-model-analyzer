@@ -2,6 +2,8 @@
 
 namespace Naoray\EloquentModelAnalyzer\Traits;
 
+use SplFileObject;
+use ReflectionType;
 use ReflectionMethod;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -17,7 +19,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 trait InteractsWithRelationMethods
 {
-    protected static function getRelationTypes()
+    /**
+     * Get all relation types a model can have.
+     */
+    protected static function getRelationTypes(): array
     {
         return [
             BelongsTo::class,
@@ -32,7 +37,20 @@ trait InteractsWithRelationMethods
         ];
     }
 
-    protected function getReturnTypeFromDoc($docComment)
+    /**
+     * @param ReflectionType $type
+     * @return bool
+     */
+    protected function isRelationReturnType(ReflectionType $type): bool
+    {
+        return in_array($type->getName(), $this->getRelationTypes());
+    }
+
+    /**
+     * @param string $docComment
+     * @return string
+     */
+    protected function extractReturnTypeFromDocs(string $docComment): string
     {
         return Arr::first(static::getRelationTypes(), function ($type) use ($docComment) {
             return Str::contains($docComment, '@return ' . class_basename($type))
@@ -47,7 +65,7 @@ trait InteractsWithRelationMethods
      */
     protected function getRelationMethodContent(ReflectionMethod $method)
     {
-        $file = new \SplFileObject($method->getFileName());
+        $file = new SplFileObject($method->getFileName());
         $file->seek($method->getStartLine() - 1);
 
         $code = '';
