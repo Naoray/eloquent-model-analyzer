@@ -50,11 +50,11 @@ trait InteractsWithRelationMethods
      * @param string $docComment
      * @return string
      */
-    protected function extractReturnTypeFromDocs(string $docComment): string
+    protected function extractReturnTypeFromDocs(string $docComment)
     {
         return Arr::first(static::getRelationTypes(), function ($type) use ($docComment) {
             return Str::contains($docComment, '@return ' . class_basename($type))
-                || Str::contains($docComment, "@return $type");
+                || Str::contains($docComment, "@return \\$type");
         });
     }
 

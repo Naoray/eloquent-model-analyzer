@@ -30,20 +30,13 @@ class Field implements Arrayable
     protected $table;
 
     /**
-     * @var array
-     */
-    protected $indexes;
-
-    /**
      * @param string $column
      * @param string $table
-     * @param array $indexes
      */
-    public function __construct(string $column, string $table, array $indexes)
+    public function __construct(string $column, string $table)
     {
         $this->table = $table;
         $this->column = $column;
-        $this->indexes = $indexes;
         $this->data = DB::connection()->getDoctrineColumn($table, $column);
     }
 
@@ -54,11 +47,9 @@ class Field implements Arrayable
             'type' => $this->typeClass(),
             'unsigned' => $this->data->getUnsigned(),
             'unique' => $this->isUnique(),
-            'isForeignKey' => (bool)Arr::where(array_keys($this->indexes()), function ($key) {
-                return Str::contains($key, '_foreign') && Str::contains($key, '_' . $this->column . '_');
-            }),
-            'nullable' => !$this->data->notnull,
-            'autoincrement' => $this->data->autoincrement,
+            'isForeignKey' => $this->isForeignKey(),
+            'nullable' => !$this->data->getNotnull(),
+            'autoincrement' => $this->data->getAutoincrement(),
         ];
     }
 
@@ -74,9 +65,18 @@ class Field implements Arrayable
         });
     }
 
-    public function indexes()
+    public function isForeignKey(): bool
     {
-        return Arr::where($this->indexes, function (Index $index) {
+        return (bool)Arr::where(array_keys($this->indexes()), function ($key) {
+            return Str::contains($key, '_foreign') && Str::contains($key, '_' . $this->column . '_');
+        });
+    }
+
+    public function indexes(): array
+    {
+        $allIndexes = DB::getDoctrineSchemaManager()->listTableIndexes($this->table);
+
+        return Arr::where($allIndexes, function (Index $index) {
             return in_array($this->column, $index->getColumns());
         });
     }
