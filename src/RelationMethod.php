@@ -2,27 +2,58 @@
 
 namespace Naoray\EloquentModelAnalyzer;
 
+use ReflectionClass;
+use ReflectionMethod;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 
 class RelationMethod implements Arrayable
 {
     use ForwardsCalls, InteractsWithRelationMethods;
 
+    /**
+     * @var ReflectionClass
+     */
     protected $reflection;
+
+    /**
+     * @var Model
+     */
     protected $model;
+
+    /**
+     * @var ReflectionMethod
+     */
     protected $method;
 
-    public function __construct(array $data)
+    /**
+     * @param ReflectionMethod $method
+     * @param Model $model
+     * @param ReflectionClass $reflection
+     */
+    public function __construct(ReflectionMethod $method, Model $model, ReflectionClass $reflection)
     {
-        $this->method = $data['method'];
-        $this->model = $data['model'];
-        $this->reflection = $data['reflection'];
+        $this->method = $method;
+        $this->model = $model;
+        $this->reflection = $reflection;
     }
 
-    protected function getRelatedClass()
+    public function toArray(): array
+    {
+        return [
+            'relatedClass' => $this->getRelatedClass(),
+            'type' => $this->returnType(),
+            'foreignKey' => $this->foreignKey(),
+            'ownerKey' => $this->ownerKey(),
+            'methodName' => $this->getName(),
+        ];
+    }
+
+    public function getRelatedClass(): string
     {
         $methodContent = $this->getRelationMethodContent($this->method);
 
@@ -51,18 +82,7 @@ class RelationMethod implements Arrayable
             : $this->reflection->getNamespaceName() . '\\' . $className;
     }
 
-    public function toArray()
-    {
-        return [
-            'relatedClass' => $this->getRelatedClass(),
-            'type' => $this->getMethodReturnType(),
-            'foreignKey' => $this->getForeignKeyName(),
-            'ownerKey' => $this->getOwnerKeyName(),
-            'methodName' => $this->getName(),
-        ];
-    }
-
-    protected function getMethodReturnType()
+    public function returnType(): string
     {
         if ($this->hasReturnType()) {
             return $this->getReturnType()->getName();
@@ -75,7 +95,7 @@ class RelationMethod implements Arrayable
         return get_class($this->getRelation());
     }
 
-    protected function getForeignKeyName()
+    public function foreignKey(): string
     {
         $relationObj = $this->getRelation();
 
@@ -84,7 +104,7 @@ class RelationMethod implements Arrayable
             : $relationObj->getForeignKey();
     }
 
-    protected function getOwnerKeyName()
+    public function ownerKey(): string
     {
         $relationObj = $this->getRelation();
 
@@ -93,7 +113,7 @@ class RelationMethod implements Arrayable
             : $relationObj->getLocalKeyName();
     }
 
-    protected function getRelation()
+    public function getRelation(): Relation
     {
         return $this->model->{$this->getName()}();
     }

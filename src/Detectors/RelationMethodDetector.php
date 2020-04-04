@@ -43,11 +43,7 @@ class RelationMethodDetector implements Detector
                 return $this->isRelationMethod($method);
             })
             ->map(function ($method) use ($reflectionObject) {
-                return new RelationMethod([
-                    'method' => $method,
-                    'model' => $this->model,
-                    'reflection' => $reflectionObject,
-                ]);
+                return new RelationMethod($method, $this->model, $reflectionObject);
             });
     }
 

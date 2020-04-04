@@ -30,7 +30,7 @@ class FieldsDetectorTest extends TestCase
         $userMigration->up();
         $user = new User();
 
-        $fields = (new FieldsDetector())->analyze($user);
+        $fields = (new FieldsDetector($user))->analyze();
 
         $this->assertCount(4, $fields);
         $this->assertEquals([
