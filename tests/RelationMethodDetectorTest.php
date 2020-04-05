@@ -3,8 +3,8 @@
 namespace Naoray\EloquentModelAnalyzer\Tests;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Naoray\EloquentModelAnalyzer\Detectors\RelationMethodDetector;
 
 class RelationMethodDetectorTest extends TestCase
@@ -96,7 +96,7 @@ class UserWithReturnTypes extends Model
 class UserWithDocComments extends Model
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsT
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function parent()
     {
