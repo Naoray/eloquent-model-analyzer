@@ -2,9 +2,9 @@
 
 namespace Naoray\EloquentModelAnalyzer\Detectors;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Model;
 use Naoray\EloquentModelAnalyzer\Column;
 use Naoray\EloquentModelAnalyzer\Contracts\Detector;
 use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
