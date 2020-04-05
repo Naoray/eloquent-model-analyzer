@@ -16,16 +16,22 @@ class RelationMethodDetector implements Detector
     use InteractsWithRelationMethods;
 
     /**
-     * @var Model
+     * @var Model|string
      */
     protected $model;
 
     /**
-     * @param Model $model
+     * @var ReflectionObject
      */
-    public function __construct(Model $model)
+    protected $reflection;
+
+    /**
+     * @param Model|string $model
+     */
+    public function __construct($model)
     {
-        $this->model = $model;
+        $this->model = is_string($model) ? new $model : $model;
+        $this->reflection = new ReflectionObject($this->model);
     }
 
     /**
@@ -36,14 +42,12 @@ class RelationMethodDetector implements Detector
      */
     public function analyze(): Collection
     {
-        $reflectionObject = new ReflectionObject($this->model);
-
-        return collect($reflectionObject->getMethods(ReflectionMethod::IS_PUBLIC))
+        return collect($this->reflection->getMethods(ReflectionMethod::IS_PUBLIC))
             ->filter(function (ReflectionMethod $method) {
                 return $this->isRelationMethod($method);
             })
-            ->map(function ($method) use ($reflectionObject) {
-                return new RelationMethod($method, $this->model, $reflectionObject);
+            ->map(function ($method) {
+                return new RelationMethod($method, $this->model, $this->reflection);
             });
     }
 
@@ -57,8 +61,8 @@ class RelationMethodDetector implements Detector
             return $this->isRelationReturnType($method->getReturnType());
         }
 
-        if ($docComment = $method->getDocComment()) {
-            return (bool)$this->extractReturnTypeFromDocs($docComment);
+        if ($isRelationMethod = $this->hasRelationTypeInDoc($method)) {
+            return $isRelationMethod;
         }
 
         if ($method->getNumberOfParameters() > 0) {

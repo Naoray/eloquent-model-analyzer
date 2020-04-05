@@ -47,6 +47,17 @@ trait InteractsWithRelationMethods
     }
 
     /**
+     * @param ReflectionMethod $method
+     * @return bool
+     */
+    protected function hasRelationTypeInDoc(ReflectionMethod $method): bool
+    {
+        return (bool)$this->extractReturnTypeFromDocs(
+            $method->getDocComment()
+        );
+    }
+
+    /**
      * @param string $docComment
      * @return string
      */

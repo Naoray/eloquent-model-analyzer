@@ -12,9 +12,7 @@ class RelationMethodDetectorTest extends TestCase
     /** @test */
     public function it_can_get_relation_methods_of_a_model_by_return_type()
     {
-        $user = new UserWithReturnTypes();
-
-        $relationMethods = (new RelationMethodDetector($user))->analyze();
+        $relationMethods = (new RelationMethodDetector(UserWithReturnTypes::class))->analyze();
 
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
@@ -98,7 +96,7 @@ class UserWithReturnTypes extends Model
 class UserWithDocComments extends Model
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsT
      */
     public function parent()
     {

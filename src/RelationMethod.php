@@ -88,8 +88,8 @@ class RelationMethod implements Arrayable
             return $this->getReturnType()->getName();
         }
 
-        if ($docComment = $this->getDocComment()) {
-            return $this->extractReturnTypeFromDocs($docComment);
+        if ($this->hasRelationTypeInDoc($this->method)) {
+            return $this->extractReturnTypeFromDocs($this->getDocComment());
         }
 
         return get_class($this->getRelation());

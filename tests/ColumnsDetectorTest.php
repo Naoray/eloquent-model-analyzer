@@ -28,9 +28,8 @@ class ColumnsDetectorTest extends TestCase
             }
         };
         $userMigration->up();
-        $user = new User();
 
-        $fields = (new ColumnsDetector($user))->analyze();
+        $fields = (new ColumnsDetector(User::class))->analyze();
 
         $this->assertCount(4, $fields);
         $this->assertEquals([

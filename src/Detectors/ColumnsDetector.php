@@ -14,16 +14,16 @@ class ColumnsDetector implements Detector
     use InteractsWithRelationMethods;
 
     /**
-     * @var Model
+     * @var Model|string
      */
     protected $model;
 
     /**
-     * @param Model $model
+     * @param Model|string $model
      */
-    public function __construct(Model $model)
+    public function __construct($model)
     {
-        $this->model = $model;
+        $this->model = is_string($model) ? new $model : $model;
     }
 
     public function analyze(): Collection
