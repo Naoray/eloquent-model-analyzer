@@ -2,20 +2,20 @@
 
 namespace Naoray\EloquentModelAnalyzer\Traits;
 
-use SplFileObject;
-use ReflectionType;
-use ReflectionMethod;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use ReflectionMethod;
+use ReflectionType;
+use SplFileObject;
 
 trait InteractsWithRelationMethods
 {
@@ -52,7 +52,7 @@ trait InteractsWithRelationMethods
      */
     protected function hasRelationTypeInDoc(ReflectionMethod $method): bool
     {
-        return (bool)$this->extractReturnTypeFromDocs(
+        return (bool) $this->extractReturnTypeFromDocs(
             $method->getDocComment()
         );
     }
@@ -64,7 +64,7 @@ trait InteractsWithRelationMethods
     protected function extractReturnTypeFromDocs(string $docComment)
     {
         return Arr::first(static::getRelationTypes(), function ($type) use ($docComment) {
-            return Str::contains($docComment, '@return ' . class_basename($type))
+            return Str::contains($docComment, '@return '.class_basename($type))
                 || Str::contains($docComment, "@return \\$type");
         });
     }
