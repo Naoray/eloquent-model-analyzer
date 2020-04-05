@@ -46,6 +46,10 @@ trait InteractsWithRelationMethods
         return in_array($type->getName(), $this->getRelationTypes());
     }
 
+    /**
+     * @param ReflectionMethod $method
+     * @return bool
+     */
     protected function hasReturnTypeInDoc(ReflectionMethod $method): bool
     {
         return Str::contains($method->getDocComment(), '@return');
