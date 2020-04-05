@@ -2,14 +2,14 @@
 
 namespace Naoray\EloquentModelAnalyzer;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ForwardsCalls;
+use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 use ReflectionClass;
 use ReflectionMethod;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Traits\ForwardsCalls;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 
 class RelationMethod implements Arrayable
 {
@@ -70,7 +70,7 @@ class RelationMethod implements Arrayable
          * If classname does not use ::class notation
          * we consider it as a full class string reference.
          */
-        if (!$className->is('*::class')) {
+        if (! $className->is('*::class')) {
             return $className;
         }
 
@@ -79,7 +79,7 @@ class RelationMethod implements Arrayable
 
         return $className === 'self' || $className === class_basename($this->reflection->getName())
             ? $this->reflection->getName()
-            : $this->reflection->getNamespaceName() . '\\' . $className;
+            : $this->reflection->getNamespaceName().'\\'.$className;
     }
 
     public function returnType(): string
