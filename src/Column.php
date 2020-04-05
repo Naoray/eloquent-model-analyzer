@@ -5,12 +5,12 @@ namespace Naoray\EloquentModelAnalyzer;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Doctrine\DBAL\Schema\Index;
-use Doctrine\DBAL\Schema\Column;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Doctrine\DBAL\Schema\Column as DbalColumn;
 
-class Field implements Arrayable
+class Column implements Arrayable
 {
     use ForwardsCalls;
 
@@ -20,7 +20,7 @@ class Field implements Arrayable
     protected $column;
 
     /**
-     * @var Column
+     * @var DbalColumn
      */
     protected $data;
 

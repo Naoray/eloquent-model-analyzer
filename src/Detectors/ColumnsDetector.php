@@ -5,11 +5,11 @@ namespace Naoray\EloquentModelAnalyzer\Detectors;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
-use Naoray\EloquentModelAnalyzer\Field;
+use Naoray\EloquentModelAnalyzer\Column;
 use Naoray\EloquentModelAnalyzer\Contracts\Detector;
 use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 
-class FieldsDetector implements Detector
+class ColumnsDetector implements Detector
 {
     use InteractsWithRelationMethods;
 
@@ -32,7 +32,7 @@ class FieldsDetector implements Detector
 
         return collect(Schema::getColumnListing($tableName))
             ->mapWithKeys(function ($column) use ($tableName) {
-                return [$column => new Field($column, $tableName)];
+                return [$column => new Column($column, $tableName)];
             });
     }
 }

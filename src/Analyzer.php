@@ -4,7 +4,7 @@ namespace Naoray\EloquentModelAnalyzer;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Naoray\EloquentModelAnalyzer\Detectors\FieldsDetector;
+use Naoray\EloquentModelAnalyzer\Detectors\ColumnsDetector;
 use Naoray\EloquentModelAnalyzer\Detectors\RelationMethodDetector;
 
 class Analyzer
@@ -14,8 +14,8 @@ class Analyzer
         return (new RelationMethodDetector($model))->analyze();
     }
 
-    public static function fields(Model $model): Collection
+    public static function columns(Model $model): Collection
     {
-        return (new FieldsDetector($model))->analyze();
+        return (new ColumnsDetector($model))->analyze();
     }
 }

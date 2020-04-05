@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Naoray\EloquentModelAnalyzer\Detectors\FieldsDetector;
+use Naoray\EloquentModelAnalyzer\Detectors\ColumnsDetector;
 
-class FieldsDetectorTest extends TestCase
+class ColumnsDetectorTest extends TestCase
 {
     /** @test */
     public function it_can_detect_all_fields_from_the_database_table()
@@ -30,7 +30,7 @@ class FieldsDetectorTest extends TestCase
         $userMigration->up();
         $user = new User();
 
-        $fields = (new FieldsDetector($user))->analyze();
+        $fields = (new ColumnsDetector($user))->analyze();
 
         $this->assertCount(4, $fields);
         $this->assertEquals([
