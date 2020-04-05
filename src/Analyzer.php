@@ -2,8 +2,8 @@
 
 namespace Naoray\EloquentModelAnalyzer;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Naoray\EloquentModelAnalyzer\Detectors\ColumnsDetector;
 use Naoray\EloquentModelAnalyzer\Detectors\RelationMethodDetector;
 
