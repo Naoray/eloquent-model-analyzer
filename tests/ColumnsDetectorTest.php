@@ -2,13 +2,13 @@
 
 namespace Naoray\EloquentModelAnalyzer\Tests;
 
-use Doctrine\DBAL\Types\IntegerType;
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\TextType;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Types\IntegerType;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 use Naoray\EloquentModelAnalyzer\Detectors\ColumnsDetector;
 
 class ColumnsDetectorTest extends TestCase
@@ -29,7 +29,7 @@ class ColumnsDetectorTest extends TestCase
         };
         $userMigration->up();
 
-        $fields = (new ColumnsDetector(User::class))->analyze();
+        $fields = (new ColumnsDetector(User::class))->discover();
 
         $this->assertCount(4, $fields);
         $this->assertEquals([

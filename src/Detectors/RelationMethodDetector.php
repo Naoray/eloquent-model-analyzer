@@ -2,14 +2,14 @@
 
 namespace Naoray\EloquentModelAnalyzer\Detectors;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Collection;
-use Naoray\EloquentModelAnalyzer\Contracts\Detector;
-use Naoray\EloquentModelAnalyzer\RelationMethod;
-use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 use ReflectionMethod;
 use ReflectionObject;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Naoray\EloquentModelAnalyzer\RelationMethod;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Naoray\EloquentModelAnalyzer\Contracts\Detector;
+use Naoray\EloquentModelAnalyzer\Traits\InteractsWithRelationMethods;
 
 class RelationMethodDetector implements Detector
 {
@@ -40,7 +40,7 @@ class RelationMethodDetector implements Detector
      *
      * @return Collection
      */
-    public function analyze(): Collection
+    public function discover(): Collection
     {
         return collect($this->reflection->getMethods(ReflectionMethod::IS_PUBLIC))
             ->filter(function (ReflectionMethod $method) {

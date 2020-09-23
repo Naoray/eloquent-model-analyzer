@@ -8,5 +8,5 @@ interface Detector
 {
     public function __construct($model);
 
-    public function analyze(): Collection;
+    public function discover(): Collection;
 }

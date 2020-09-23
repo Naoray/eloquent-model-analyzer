@@ -3,8 +3,8 @@
 namespace Naoray\EloquentModelAnalyzer\Tests;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Naoray\EloquentModelAnalyzer\Detectors\RelationMethodDetector;
 
 class RelationMethodDetectorTest extends TestCase
@@ -12,7 +12,7 @@ class RelationMethodDetectorTest extends TestCase
     /** @test */
     public function it_can_get_relation_methods_of_a_model_by_return_type()
     {
-        $relationMethods = (new RelationMethodDetector(UserWithReturnTypes::class))->analyze();
+        $relationMethods = (new RelationMethodDetector(UserWithReturnTypes::class))->discover();
 
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
@@ -36,7 +36,7 @@ class RelationMethodDetectorTest extends TestCase
     {
         $user = new UserWithDocComments();
 
-        $relationMethods = (new RelationMethodDetector($user))->analyze();
+        $relationMethods = (new RelationMethodDetector($user))->discover();
 
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
@@ -60,7 +60,7 @@ class RelationMethodDetectorTest extends TestCase
     {
         $user = new UserWithoutAnyHints();
 
-        $relationMethods = (new RelationMethodDetector($user))->analyze();
+        $relationMethods = (new RelationMethodDetector($user))->discover();
 
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
