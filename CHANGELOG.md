@@ -8,14 +8,14 @@
 **Changed**
 - renamed `Naoray\EloquentModelAnalyzer\Contracts\Detector`'s `analyze()` method into `discover()`
 
-[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v1.0.2..v2.0.0
+[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v1.0.2..v2.0.0)
 
 ## [v1.0.2](https://github.com/Naoray/eloquent-model-analyzer/tree/v1.0.2) (2020-04-05)
 
 **Fixed**
 - removed use of `Str::of()` since it is not compatible with Laravel v6 usage
 
-[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v1.0.1..v1.0.2
+[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v1.0.1..v1.0.2)
 
 ## [v1.0.1](https://github.com/Naoray/eloquent-model-analyzer/tree/v1.0.1) (2020-04-05)
 
