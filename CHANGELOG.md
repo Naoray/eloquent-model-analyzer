@@ -1,0 +1,24 @@
+# Changelog
+
+## [v2.0.0](https://github.com/Naoray/eloquent-model-analyzer/tree/v2.0.0) (2020-09-23)
+
+**Added**
+- support for Laravel 8 (b328fefb987ee87ae04aea501d08671b5c3b5b06)
+
+**Changed**
+- renamed `Naoray\EloquentModelAnalyzer\Contracts\Detector`'s `analyze()` method into `discover()`
+
+[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v1.0.2..v2.0.0
+
+## [v1.0.2](https://github.com/Naoray/eloquent-model-analyzer/tree/v1.0.2) (2020-04-05)
+
+**Fixed**
+- removed use of `Str::of()` since it is not compatible with Laravel v6 usage
+
+[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v1.0.1..v1.0.2
+
+## [v1.0.1](https://github.com/Naoray/eloquent-model-analyzer/tree/v1.0.1) (2020-04-05)
+
+**Initial Release**
+- `relations()` method to retrieve all relation methods of a model
+- `columns()` method to retrieve all columns of a model
