@@ -2,13 +2,13 @@
 
 namespace Naoray\EloquentModelAnalyzer\Tests;
 
-use Doctrine\DBAL\Types\TextType;
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\IntegerType;
-use Illuminate\Support\Facades\Schema;
+use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Types\TextType;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Naoray\EloquentModelAnalyzer\Detectors\ColumnsDetector;
 
 class ColumnsDetectorTest extends TestCase
