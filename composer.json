@@ -26,12 +26,5 @@
         "psr-4": {
             "Naoray\\EloquentModelAnalyzer\\Tests\\": "tests"
         }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Naoray\\EloquentModelAnalyzer\\EloquentModelAnalyzerServiceProvider"
-            ]
-        }
     }
 }
