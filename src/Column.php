@@ -37,6 +37,10 @@ class Column implements Arrayable
     {
         $this->table = $table;
         $this->column = $column;
+        $databasePlatform = \Illuminate\Support\Facades\DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform();
+        if (get_class($databasePlatform) === 'Doctrine\DBAL\Platforms\MySQL57Platform') {
+            $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
+        }
         $this->data = DB::connection()->getDoctrineColumn($table, $column);
     }
 
