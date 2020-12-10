@@ -21,7 +21,7 @@ class ColumnsDetectorTest extends TestCase
             {
                 Schema::create('users', function (Blueprint $table) {
                     $table->id();
-                    $table->string('name');
+                    $table->enum('name', ['test']);
                     $table->string('email')->unique();
                     $table->json('bio')->nullable();
                 });
