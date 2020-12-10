@@ -4,6 +4,7 @@ namespace Naoray\EloquentModelAnalyzer\Detectors;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Naoray\EloquentModelAnalyzer\Column;
 use Naoray\EloquentModelAnalyzer\Contracts\Detector;
@@ -24,6 +25,12 @@ class ColumnsDetector implements Detector
     public function __construct($model)
     {
         $this->model = is_string($model) ? new $model : $model;
+
+        // MySQL 5.7 backward compability
+        $databasePlatform = DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform();
+        if (get_class($databasePlatform) === 'Doctrine\DBAL\Platforms\MySQL57Platform') {
+            $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
+        }
     }
 
     public function discover(): Collection
