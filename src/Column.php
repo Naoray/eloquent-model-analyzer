@@ -2,13 +2,13 @@
 
 namespace Naoray\EloquentModelAnalyzer;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Doctrine\DBAL\Schema\Index;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Traits\ForwardsCalls;
 use Doctrine\DBAL\Schema\Column as DbalColumn;
+use Doctrine\DBAL\Schema\Index;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ForwardsCalls;
 
 class Column implements Arrayable
 {
@@ -48,7 +48,7 @@ class Column implements Arrayable
             'unsigned' => $this->data->getUnsigned(),
             'unique' => $this->isUnique(),
             'isForeignKey' => $this->isForeignKey(),
-            'nullable' => !$this->data->getNotnull(),
+            'nullable' => ! $this->data->getNotnull(),
             'autoincrement' => $this->data->getAutoincrement(),
         ];
     }
@@ -60,15 +60,15 @@ class Column implements Arrayable
 
     public function isUnique(): bool
     {
-        return (bool)Arr::first($this->indexes(), function (Index $index) {
+        return (bool) Arr::first($this->indexes(), function (Index $index) {
             return $index->isUnique();
         });
     }
 
     public function isForeignKey(): bool
     {
-        return (bool)Arr::where(array_keys($this->indexes()), function ($key) {
-            return Str::contains($key, '_foreign') && Str::contains($key, '_' . $this->column . '_');
+        return (bool) Arr::where(array_keys($this->indexes()), function ($key) {
+            return Str::contains($key, '_foreign') && Str::contains($key, '_'.$this->column.'_');
         });
     }
 
