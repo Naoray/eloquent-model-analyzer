@@ -7,7 +7,7 @@
 Analyzing an Eloquent Model for its relations and columns can be overwhelming. This little library aims to make it as simple as possible.
 
 You probably wonder why you would ever need to analyze your Models at runtime?! All scenarios I can think of are related to analyzing the codebase to generate some code bits. Here are some scenarios where this might come in handy:
-- automatically create factories for your models as shown in [laravel-prefill-factory](https://github.com/naoray/laravel-factory-prefill)
+- automatically create factories for your models as shown in [laravel-prefill-factory](https://github.com/naoray/laravel-factory-prefill) or [factory-generator](https://github.com/laravel-shift/factory-generator)
 - it could be use to create something like the `trace` command in [laravel-shift/blueprint](https://github.com/laravel-shift/blueprint)
 
 ## Install
