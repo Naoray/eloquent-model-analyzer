@@ -13,7 +13,8 @@ use ReflectionMethod;
 
 class RelationMethod implements Arrayable
 {
-    use ForwardsCalls, InteractsWithRelationMethods;
+    use ForwardsCalls;
+    use InteractsWithRelationMethods;
 
     /**
      * @var ReflectionClass
@@ -32,8 +33,8 @@ class RelationMethod implements Arrayable
 
     /**
      * @param ReflectionMethod $method
-     * @param Model $model
-     * @param ReflectionClass $reflection
+     * @param Model            $model
+     * @param ReflectionClass  $reflection
      */
     public function __construct(ReflectionMethod $method, Model $model, ReflectionClass $reflection)
     {
@@ -46,10 +47,10 @@ class RelationMethod implements Arrayable
     {
         return [
             'relatedClass' => $this->getRelatedClass(),
-            'type' => $this->returnType(),
-            'foreignKey' => $this->foreignKey(),
-            'ownerKey' => $this->ownerKey(),
-            'methodName' => $this->getName(),
+            'type'         => $this->returnType(),
+            'foreignKey'   => $this->foreignKey(),
+            'ownerKey'     => $this->ownerKey(),
+            'methodName'   => $this->getName(),
         ];
     }
 
@@ -70,7 +71,7 @@ class RelationMethod implements Arrayable
          * If classname does not use ::class notation
          * we consider it as a full class string reference.
          */
-        if (! $className->is('*::class')) {
+        if (!$className->is('*::class')) {
             return $className;
         }
 
@@ -121,8 +122,9 @@ class RelationMethod implements Arrayable
     /**
      * Dynamically pass method calls to the underlying method.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)

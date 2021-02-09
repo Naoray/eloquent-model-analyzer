@@ -30,7 +30,7 @@ class RelationMethodDetector implements Detector
      */
     public function __construct($model)
     {
-        $this->model = is_string($model) ? new $model : $model;
+        $this->model = is_string($model) ? new $model() : $model;
         $this->reflection = new ReflectionObject($this->model);
     }
 
