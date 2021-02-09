@@ -33,39 +33,39 @@ class ColumnsDetectorTest extends TestCase
 
         $this->assertCount(4, $fields);
         $this->assertEquals([
-            'name' => 'id',
-            'type' => IntegerType::class,
-            'unsigned' => false,
-            'unique' => true,
-            'isForeignKey' => false,
-            'nullable' => false,
+            'name'          => 'id',
+            'type'          => IntegerType::class,
+            'unsigned'      => false,
+            'unique'        => true,
+            'isForeignKey'  => false,
+            'nullable'      => false,
             'autoincrement' => true,
         ], $fields->get('id')->toArray());
         $this->assertEquals([
-            'name' => 'name',
-            'type' => StringType::class,
-            'unsigned' => false,
-            'unique' => false,
-            'isForeignKey' => false,
-            'nullable' => false,
+            'name'          => 'name',
+            'type'          => StringType::class,
+            'unsigned'      => false,
+            'unique'        => false,
+            'isForeignKey'  => false,
+            'nullable'      => false,
             'autoincrement' => false,
         ], $fields->get('name')->toArray());
         $this->assertEquals([
-            'name' => 'email',
-            'type' => StringType::class,
-            'unsigned' => false,
-            'unique' => true,
-            'isForeignKey' => false,
-            'nullable' => false,
+            'name'          => 'email',
+            'type'          => StringType::class,
+            'unsigned'      => false,
+            'unique'        => true,
+            'isForeignKey'  => false,
+            'nullable'      => false,
             'autoincrement' => false,
         ], $fields->get('email')->toArray());
         $this->assertEquals([
-            'name' => 'bio',
-            'type' => TextType::class,
-            'unsigned' => false,
-            'unique' => false,
-            'isForeignKey' => false,
-            'nullable' => true,
+            'name'          => 'bio',
+            'type'          => TextType::class,
+            'unsigned'      => false,
+            'unique'        => false,
+            'isForeignKey'  => false,
+            'nullable'      => true,
             'autoincrement' => false,
         ], $fields->get('bio')->toArray());
     }
