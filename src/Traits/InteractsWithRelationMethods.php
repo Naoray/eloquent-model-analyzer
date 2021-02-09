@@ -39,6 +39,7 @@ trait InteractsWithRelationMethods
 
     /**
      * @param ReflectionType $type
+     *
      * @return bool
      */
     protected function isRelationReturnType(ReflectionType $type): bool
@@ -48,6 +49,7 @@ trait InteractsWithRelationMethods
 
     /**
      * @param ReflectionMethod $method
+     *
      * @return bool
      */
     protected function hasReturnTypeInDoc(ReflectionMethod $method): bool
@@ -57,6 +59,7 @@ trait InteractsWithRelationMethods
 
     /**
      * @param ReflectionMethod $method
+     *
      * @return bool
      */
     protected function hasRelationTypeInDoc(ReflectionMethod $method): bool
@@ -68,6 +71,7 @@ trait InteractsWithRelationMethods
 
     /**
      * @param string $docComment
+     *
      * @return string
      */
     protected function extractReturnTypeFromDocs(string $docComment)
