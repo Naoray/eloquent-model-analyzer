@@ -2,7 +2,7 @@
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/naoray/eloquent-model-analyzer.svg?style=flat-square)](https://packagist.org/packages/naoray/eloquent-model-analyzer)
-[![Build Status](https://travis-ci.org/Naoray/eloquent-model-analyzer.svg?branch=master)](https://travis-ci.org/Naoray/eloquent-model-analyzer)
+![Tests](https://github.com/naoray/eloquent-model-analyzer/workflows/Run%20Tests%20-%20Current/badge.svg?branch=master)
 
 Analyzing an Eloquent Model for its relations and columns can be overwhelming. This little library aims to make it as simple as possible.
 
