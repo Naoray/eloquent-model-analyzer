@@ -43,12 +43,12 @@ class Column implements Arrayable
     public function toArray(): array
     {
         return [
-            'name' => $this->column,
-            'type' => $this->typeClass(),
-            'unsigned' => $this->data->getUnsigned(),
-            'unique' => $this->isUnique(),
-            'isForeignKey' => $this->isForeignKey(),
-            'nullable' => ! $this->data->getNotnull(),
+            'name'          => $this->column,
+            'type'          => $this->typeClass(),
+            'unsigned'      => $this->data->getUnsigned(),
+            'unique'        => $this->isUnique(),
+            'isForeignKey'  => $this->isForeignKey(),
+            'nullable'      => !$this->data->getNotnull(),
             'autoincrement' => $this->data->getAutoincrement(),
         ];
     }
