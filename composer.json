@@ -10,8 +10,8 @@
         }
     ],
     "require": {
-        "illuminate/database": "^6.0|^7.3|^8.0",
-        "illuminate/support": "^6.0|^7.3|^8.0",
+        "illuminate/database": "^6.0|^7.30.4|^8.24.0",
+        "illuminate/support": "^6.0|^7.3|^8.24.0",
         "doctrine/dbal": "^2.10"
     },
     "require-dev": {
