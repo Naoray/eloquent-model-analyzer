@@ -43,12 +43,12 @@ class Column implements Arrayable
     public function toArray(): array
     {
         return [
-            'name' => $this->column,
-            'type' => $this->typeClass(),
-            'unsigned' => $this->data->getUnsigned(),
-            'unique' => $this->isUnique(),
-            'isForeignKey' => $this->isForeignKey(),
-            'nullable' => ! $this->data->getNotnull(),
+            'name'          => $this->column,
+            'type'          => $this->typeClass(),
+            'unsigned'      => $this->data->getUnsigned(),
+            'unique'        => $this->isUnique(),
+            'isForeignKey'  => $this->isForeignKey(),
+            'nullable'      => !$this->data->getNotnull(),
             'autoincrement' => $this->data->getAutoincrement(),
         ];
     }
@@ -84,8 +84,9 @@ class Column implements Arrayable
     /**
      * Dynamically pass method calls to the underlying column.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)

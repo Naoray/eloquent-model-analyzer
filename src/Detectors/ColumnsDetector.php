@@ -24,7 +24,7 @@ class ColumnsDetector implements Detector
      */
     public function __construct($model)
     {
-        $this->model = is_string($model) ? new $model : $model;
+        $this->model = is_string($model) ? new $model() : $model;
 
         // MySQL 5.7 backward compability
         $databasePlatform = DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform();

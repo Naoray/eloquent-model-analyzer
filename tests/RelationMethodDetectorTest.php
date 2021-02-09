@@ -17,17 +17,17 @@ class RelationMethodDetectorTest extends TestCase
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
             'relatedClass' => UserWithReturnTypes::class,
-            'type' => BelongsTo::class,
-            'foreignKey' => 'parent_id',
-            'ownerKey' => 'id',
-            'methodName' => 'parent',
+            'type'         => BelongsTo::class,
+            'foreignKey'   => 'parent_id',
+            'ownerKey'     => 'id',
+            'methodName'   => 'parent',
         ], $relationMethods->first()->toArray());
         $this->assertEquals([
             'relatedClass' => Post::class,
-            'type' => HasMany::class,
-            'foreignKey' => 'user_id',
-            'ownerKey' => 'id',
-            'methodName' => 'posts',
+            'type'         => HasMany::class,
+            'foreignKey'   => 'user_id',
+            'ownerKey'     => 'id',
+            'methodName'   => 'posts',
         ], $relationMethods->get(1)->toArray());
     }
 
@@ -41,17 +41,17 @@ class RelationMethodDetectorTest extends TestCase
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
             'relatedClass' => UserWithDocComments::class,
-            'type' => BelongsTo::class,
-            'foreignKey' => 'parent_id',
-            'ownerKey' => 'id',
-            'methodName' => 'parent',
+            'type'         => BelongsTo::class,
+            'foreignKey'   => 'parent_id',
+            'ownerKey'     => 'id',
+            'methodName'   => 'parent',
         ], $relationMethods->first()->toArray());
         $this->assertEquals([
             'relatedClass' => Post::class,
-            'type' => HasMany::class,
-            'foreignKey' => 'user_id',
-            'ownerKey' => 'id',
-            'methodName' => 'posts',
+            'type'         => HasMany::class,
+            'foreignKey'   => 'user_id',
+            'ownerKey'     => 'id',
+            'methodName'   => 'posts',
         ], $relationMethods->get(1)->toArray());
     }
 
@@ -65,17 +65,17 @@ class RelationMethodDetectorTest extends TestCase
         $this->assertCount(2, $relationMethods);
         $this->assertEquals([
             'relatedClass' => UserWithoutAnyHints::class,
-            'type' => BelongsTo::class,
-            'foreignKey' => 'parent_id',
-            'ownerKey' => 'id',
-            'methodName' => 'parent',
+            'type'         => BelongsTo::class,
+            'foreignKey'   => 'parent_id',
+            'ownerKey'     => 'id',
+            'methodName'   => 'parent',
         ], $relationMethods->first()->toArray());
         $this->assertEquals([
             'relatedClass' => Post::class,
-            'type' => HasMany::class,
-            'foreignKey' => 'user_id',
-            'ownerKey' => 'id',
-            'methodName' => 'posts',
+            'type'         => HasMany::class,
+            'foreignKey'   => 'user_id',
+            'ownerKey'     => 'id',
+            'methodName'   => 'posts',
         ], $relationMethods->get(1)->toArray());
     }
 }
