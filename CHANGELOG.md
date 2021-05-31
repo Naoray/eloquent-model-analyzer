@@ -1,5 +1,25 @@
 # Changelog
 
+## [v2.1.2](https://github.com/Naoray/eloquent-model-analyzer/tree/v2.1.2) (2021-05-31)
+
+**Fixes**
+- allow `doctrine/dbal:^3.0` to solve version conflicts for package users
+
+## [v2.1.1](https://github.com/Naoray/eloquent-model-analyzer/tree/v2.1.1) (2021-02-09)
+
+**Fixed**
+- security dependency updates
+
+## [v2.1.0](https://github.com/Naoray/eloquent-model-analyzer/tree/v2.1.0) (2020-12-10)
+
+**Added**
+- support for MySQL 5.7 enum detections
+
+## [v2.0.1](https://github.com/Naoray/eloquent-model-analyzer/tree/v2.0.1) (2020-09-24)
+
+**Fixed**
+- removed discovering not used service provider
+
 ## [v2.0.0](https://github.com/Naoray/eloquent-model-analyzer/tree/v2.0.0) (2020-09-23)
 
 **Added**
