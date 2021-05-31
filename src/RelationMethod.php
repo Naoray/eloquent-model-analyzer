@@ -71,7 +71,7 @@ class RelationMethod implements Arrayable
          * If classname does not use ::class notation
          * we consider it as a full class string reference.
          */
-        if (!$className->is('*::class')) {
+        if (! $className->is('*::class')) {
             return $className;
         }
 
