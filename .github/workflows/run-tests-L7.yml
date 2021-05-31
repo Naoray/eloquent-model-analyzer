@@ -15,6 +15,7 @@ jobs:
         include:
           - laravel: 7.*
             testbench: 5.*
+            dbal: 2.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
