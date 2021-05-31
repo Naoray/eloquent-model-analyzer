@@ -48,7 +48,7 @@ class Column implements Arrayable
             'unsigned'      => $this->data->getUnsigned(),
             'unique'        => $this->isUnique(),
             'isForeignKey'  => $this->isForeignKey(),
-            'nullable'      => !$this->data->getNotnull(),
+            'nullable'      => ! $this->data->getNotnull(),
             'autoincrement' => $this->data->getAutoincrement(),
         ];
     }
