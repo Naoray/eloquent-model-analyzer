@@ -104,4 +104,24 @@ trait InteractsWithRelationMethods
             ->before('}')
             ->trim();
     }
+
+    protected function methodContentCallsRelationshipMethod(ReflectionMethod $method): bool
+    {
+        $content = (string) $this->getRelationMethodContent($method);
+        $relationshipMethodNames = [
+            'hasMany',
+            'hasManyThrough',
+            'hasOneThrough',
+            'belongsToMany',
+            'hasOne',
+            'belongsTo',
+            'morphOne',
+            'morphTo',
+            'morphMany',
+            'morphToMany',
+            'morphedByMany',
+        ];
+        $regex = '#\$this->('.implode('|', $relationshipMethodNames).')\(#';
+        return (bool) preg_match($regex, $content);
+    }
 }
