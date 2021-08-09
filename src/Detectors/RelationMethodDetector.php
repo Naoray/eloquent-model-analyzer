@@ -70,11 +70,12 @@ class RelationMethodDetector implements Detector
         }
 
         // Don't try to invoke the method if it doesn't contains "$this->{relationship method}
-        if (!$this->methodContentCallsRelationshipMethod($method)) {
+        if (! $this->methodContentCallsRelationshipMethod($method)) {
             return false;
         }
         try {
             $relationObject = $this->model->{$method->getName()}();
+
             return $relationObject instanceof Relation;
         } catch (\Throwable $e) {
             return false;

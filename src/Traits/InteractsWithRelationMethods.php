@@ -122,6 +122,7 @@ trait InteractsWithRelationMethods
             'morphedByMany',
         ];
         $regex = '#\$this->('.implode('|', $relationshipMethodNames).')\(#';
+
         return (bool) preg_match($regex, $content);
     }
 }
