@@ -5,7 +5,14 @@
 **Added**
 - support for Laravel 9 (#23)
 
-[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v2.1.2..v3.0.0)
+[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v2.1.3..v3.0.0)
+
+## [v2.1.3](https://github.com/Naoray/eloquent-model-analyzer/tree/v2.1.3) (2021-08-09)
+
+**Fixes**
+- Only invoke relation methods https://github.com/Naoray/eloquent-model-analyzer/pull/22/commits/5a79919b073afec7940d8f9d75a1eb6e30466a2f - thanks to @mortenscheel
+
+[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v2.1.2..v2.1.3)
 
 ## [v2.1.2](https://github.com/Naoray/eloquent-model-analyzer/tree/v2.1.2) (2021-05-31)
 
