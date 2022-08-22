@@ -104,7 +104,7 @@ class RelationMethod implements Arrayable
     {
         $relationObj = $this->getRelation();
 
-        return match(true) {
+        return match (true) {
             $relationObj instanceof BelongsToMany => $relationObj->getForeignPivotKeyName(),
             default => $relationObj->getForeignKeyName(),
         };
