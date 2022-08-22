@@ -15,6 +15,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use ReflectionMethod;
 use ReflectionType;
+use ReflectionUnionType;
 use SplFileObject;
 
 trait InteractsWithRelationMethods
@@ -44,6 +45,11 @@ trait InteractsWithRelationMethods
      */
     protected function isRelationReturnType(ReflectionType $type): bool
     {
+        if ($type instanceof ReflectionUnionType) {
+            return collect($type->getTypes())
+                ->contains(fn (ReflectionType $type) => $this->isRelationReturnType($type));
+        }
+
         return in_array($type->getName(), $this->getRelationTypes());
     }
 

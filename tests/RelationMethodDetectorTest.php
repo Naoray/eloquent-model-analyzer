@@ -96,6 +96,22 @@ class RelationMethodDetectorTest extends TestCase
             'methodName'   => 'authors',
         ], $relationMethods->first()->toArray());
     }
+
+    /** @test */
+    public function it_can_handle_multiple_return_types()
+    {
+        $author = new Author();
+
+        $relationMethods = (new RelationMethodDetector($author))->discover();
+        $this->assertCount(1, $relationMethods);
+        $this->assertEquals([
+            'relatedClass' => Book::class,
+            'type'         => BelongsToMany::class,
+            'foreignKey'   => 'author_id',
+            'ownerKey'     => 'book_id',
+            'methodName'   => 'books',
+        ], $relationMethods->first()->toArray());
+    }
 }
 
 class UserWithReturnTypes extends Model
@@ -160,5 +176,10 @@ class Author extends Model
     public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class);
+    }
+
+    public function stringOrInt(bool $returnInt): int|string
+    {
+        return $returnInt ? 1 : '1';
     }
 }
