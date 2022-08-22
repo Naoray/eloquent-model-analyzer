@@ -4,6 +4,10 @@ namespace Naoray\EloquentModelAnalyzer;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
@@ -100,18 +104,21 @@ class RelationMethod implements Arrayable
     {
         $relationObj = $this->getRelation();
 
-        return method_exists($relationObj, 'getForeignKeyName')
-            ? $relationObj->getForeignKeyName()
-            : $relationObj->getForeignKey();
+        return match(true) {
+            $relationObj instanceof BelongsToMany => $relationObj->getForeignPivotKeyName(),
+            default => $relationObj->getForeignKeyName(),
+        };
     }
 
     public function ownerKey(): string
     {
         $relationObj = $this->getRelation();
 
-        return method_exists($relationObj, 'getOwnerKeyName')
-            ? $relationObj->getOwnerKeyName()
-            : $relationObj->getLocalKeyName();
+        return match (true) {
+            $relationObj instanceof BelongsToMany => $relationObj->getRelatedPivotKeyName(),
+            $relationObj instanceof BelongsTo => $relationObj->getOwnerKeyName(),
+            $relationObj instanceof HasManyThrough, $relationObj instanceof HasOneOrMany => $relationObj->getLocalKeyName(),
+        };
     }
 
     public function getRelation(): Relation

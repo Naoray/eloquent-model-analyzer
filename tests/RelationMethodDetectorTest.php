@@ -4,6 +4,7 @@ namespace Naoray\EloquentModelAnalyzer\Tests;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Naoray\EloquentModelAnalyzer\Detectors\RelationMethodDetector;
 
@@ -78,6 +79,23 @@ class RelationMethodDetectorTest extends TestCase
             'methodName'   => 'posts',
         ], $relationMethods->get(1)->toArray());
     }
+
+    /** @test */
+    public function it_can_detect_many_to_many_relation_methods()
+    {
+        $book = new Book();
+
+        $relationMethods = (new RelationMethodDetector($book))->discover();
+
+        $this->assertCount(1, $relationMethods);
+        $this->assertEquals([
+            'relatedClass' => Author::class,
+            'type'         => BelongsToMany::class,
+            'foreignKey'   => 'book_id',
+            'ownerKey'     => 'author_id',
+            'methodName'   => 'authors',
+        ], $relationMethods->first()->toArray());
+    }
 }
 
 class UserWithReturnTypes extends Model
@@ -127,4 +145,20 @@ class UserWithoutAnyHints extends Model
 
 class Post extends Model
 {
+}
+
+class Book extends Model
+{
+    public function authors(): BelongsToMany
+    {
+        return $this->belongsToMany(Author::class);
+    }
+}
+
+class Author extends Model
+{
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class);
+    }
 }
