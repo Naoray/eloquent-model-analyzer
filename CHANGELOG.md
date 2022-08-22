@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.0.1](https://github.com/Naoray/eloquent-model-analyzer/tree/v3.0.1) (2022-08-22)
+
+**Fixed**
+- #24 fix UnionReturnType results in exception
+- #20 BelongsToMany relation causes exception
+
+[Full Changelog](https://github.com/naoray/eloquent-model-analyzer/compare/v3.0.0..v3.0.1)
+
 ## [v3.0.0](https://github.com/Naoray/eloquent-model-analyzer/tree/v3.0.0) (2022-02-08)
 
 **Added**
