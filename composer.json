@@ -1,32 +1,32 @@
 {
-  "name": "naoray/eloquent-model-analyzer",
-  "description": "Helpful methods to gain more information about eloquent model classes.",
-  "type": "pakage",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Krishan Koenig",
-      "email": "krishan.koenig@googlemail.com"
+    "name": "naoray/eloquent-model-analyzer",
+    "description": "Helpful methods to gain more information about eloquent model classes.",
+    "type": "pakage",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Krishan Koenig",
+            "email": "krishan.koenig@googlemail.com"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^8.40.0|^9.0|^10.0",
+        "illuminate/support": "^8.24.0|^9.0|^10.0",
+        "doctrine/dbal": "^2.6|^3.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0|^7.0|^8.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Naoray\\EloquentModelAnalyzer\\": "./src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Naoray\\EloquentModelAnalyzer\\Tests\\": "tests"
+        }
     }
-  ],
-  "require": {
-    "illuminate/database": "^8.40.0|^9.0",
-    "illuminate/support": "^8.24.0|^9.0",
-    "doctrine/dbal": "^2.6|^3.0"
-  },
-  "require-dev": {
-    "orchestra/testbench": "^6.0|^7.0"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "autoload": {
-    "psr-4": {
-      "Naoray\\EloquentModelAnalyzer\\": "./src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Naoray\\EloquentModelAnalyzer\\Tests\\": "tests"
-    }
-  }
 }
