@@ -130,7 +130,7 @@ class UserWithReturnTypes extends Model
 class UserWithDocComments extends Model
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function parent()
     {
